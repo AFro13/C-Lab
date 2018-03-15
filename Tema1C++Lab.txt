@@ -1,0 +1,83 @@
+#include <iostream>
+
+class Feline
+{
+  public:
+    Feline(std::string n,int a,int w){
+      name=n;
+      age=a;
+      weight=w;
+    };
+    virtual ~Feline(){std::cout<<"Deconstructed Feline"<<std::endl;};
+    std::string getName()
+    {
+      return name;
+    }
+    int getAge()
+    {
+      return age;
+    }
+    int getWeight()
+    {
+      return weight;
+    }
+    virtual void sound()=0;
+    Feline(const Feline &f) {name = f.name; age = f.age; weight=f.weight; }
+  private:
+    std::string name;
+  protected:
+    int age;
+    int weight;
+};
+
+class Lion:public Feline
+{
+  public:
+  Lion(std::string n,int a,int w):Feline(n,a,w){}
+  void sound()
+  {
+    std::cout<<"Rawrrr"<<std::endl;
+  }
+};
+
+class Cat:public Feline
+{
+  public:
+  Cat(std::string n,int a,int w,std::string c):Feline(n,a,w){
+    color=c;
+  }
+  void sound()
+  {
+    std::cout<<"Miauu"<<std::endl;
+  }
+  protected:
+    std::string color;
+};
+
+
+int main() {
+  Feline *a=new Lion("Cezar",12,130);
+  Feline *b=new Lion("Mufasa",25,99);
+  Feline *c=new Lion("Hasim",7,148);
+  Lion *d=new Lion("Mykar",16,115);
+  Lion *e=new Lion("Simba",2,53);
+  
+  Feline *f=new Cat("Butters",3,9,"black");
+  Feline *g=new Cat("Erik",7,14,"grey");
+  Feline *h=new Cat("Clyde",11,8,"orange");
+  Cat *i=new Cat("Stan",6,14,"white");
+  Cat *j=new Cat("Kyle",5,13,"grey");
+  
+  Feline *k=g;
+  
+  
+  
+  std::cout<<a->getName()<<" "<<a->getAge()<<" "<<a->getWeight()<<std::endl;
+  a->sound();
+  
+  std::cout<<k->getName()<<" "<<k->getAge()<<" "<<k->getWeight()<<std::endl;
+  k->sound();
+  
+  delete k;
+ 
+}
