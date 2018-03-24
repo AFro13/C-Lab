@@ -1,0 +1,64 @@
+#include <iostream>
+#include <vector>
+#include <tuple>
+#include <utility>
+#include <forward_list>
+#include <queue>
+#include <functional>
+using namespace std;
+
+//Ordonare dupa primul element
+void sortare(vector<pair<int,int>>&w,int n)
+{
+  pair<int,int>aux;
+  
+  for (int j = 0; j<(n-1); j++)
+  {
+    for (int k = 0 ; k<n-j-1; k++)
+    {
+      if (w[k].first > w[k+1].first)
+      {
+        aux=w[k];
+        w[k]=w[k+1];
+        w[k+1]=aux;
+      }
+    }
+  }
+}
+
+//Daca al 2-lea element e impar -> devine 0
+void impar_zero(vector<pair<int,int>>&w,int n)
+{
+  for (int i=0; i<n; i++)
+  {
+    if(w[i].second%2==1)w[i].second=0;
+  }
+}
+
+int main() {
+  
+  vector<pair<int,int>>v;
+  v.push_back( make_pair(77,2) );
+  v.push_back( make_pair(45,8) );
+  v.push_back( make_pair(54,5) );
+  v.push_back( make_pair(7,6) );
+  v.push_back( make_pair(11,25) );
+  v.push_back( make_pair(99,99) );
+  v.push_back( make_pair(2,19) );
+  
+  for (int i=0; i<v.size(); i++)
+  {
+    cout << v[i].first << " " << v[i].second << endl;
+  }
+  cout<<endl;
+  
+  sortare(v,v.size());
+  
+  impar_zero(v,v.size());
+  
+  for (int i=0; i<v.size(); i++)
+  {
+    cout << v[i].first << " " << v[i].second << endl;
+  }
+  
+}
