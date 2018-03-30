@@ -1,0 +1,55 @@
+#include <iostream>
+#include<functional>
+#include<algorithm>
+#include<vector>
+using namespace std;
+
+
+
+class Container{
+	public:
+		Container(){}
+		virtual ~Container(){}
+		void setContainer(int input){
+		  container_ = input;
+		}
+		int getContainer(void){
+		  return container_;
+		}
+		Container(const Container &c) {container_ = c.container_;}
+		Container(Container&&) = default;
+	
+	private:
+		int container_;
+};
+
+std::function<bool(Container)> isOdd = [](Container in) ->bool
+  {
+    return (in->getContainer()%2)!=0;
+  };
+
+int main()
+{
+  Container *c1 = new Container();
+	c1->setContainer(13);
+	Container *c2 = new Container();
+	c2->setContainer(2);
+	Container *c3 = new Container();
+	c3->setContainer(37);
+	
+	vector<Container>v;
+	v.push_back(*c1);
+	v.push_back(*c2);
+	v.push_back(*c3);
+	
+	
+	 vector<Container>::iterator it;
+  for ( it = v.begin(); it != v.end(); ++it )
+  {
+    cout<<it->getContainer()<<" ";
+  }
+  cout<<endl;
+  
+  vector<Container>::iterator ti = find_if(v.begin(),v.end(),isOdd);
+  cout<<"First odd value:"<<ti->getContainer()<<endl;
+}
