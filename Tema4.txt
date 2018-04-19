@@ -1,0 +1,18 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+
+template<class Arg,class ...Args>
+auto maxim(Arg arg,Args ...args)->Arg 
+{
+  Arg max=arg;
+  for(auto it:{args...})
+  {
+    if(max<it)max=it;
+  }
+  return max;
+}
+
+int main() {
+  cout<<maxim<double,double,double>(13.3,19.9,8.6);
+}
