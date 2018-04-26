@@ -1,0 +1,24 @@
+#include<iostream>
+#include<memory>
+using namespace std;
+
+template <class T>
+class NumberHandler {
+  private:
+    T nr;
+  public:
+    NumberHandler (T x) {nr=x;}
+    T timestwo () {return nr*2;}
+    T getnr(){return nr;}
+    void setnr(int x){nr=x;}
+};
+
+int main(){
+
+auto q =make_shared<NumberHandler<int> >(13);
+cout<<q.get()->getnr()<<endl;
+q.get()->setnr(15);
+cout<<q.get()->getnr()<<endl;
+cout<<q.get()->timestwo()<<endl;
+
+}
