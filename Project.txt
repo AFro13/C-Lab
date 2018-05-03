@@ -27,7 +27,7 @@
  		T setindex(T x){ index=x; }
  		void getSM()
  		{
- 		    for (int i=0; i<container_.size(); i++)
+ 		    for (unsigned int i=0; i<container_.size(); i++)
             {
                 std::cout<<container_[i].ipRangeStart<<" "<<container_[i].ipRangeStop<<" "<<container_[i].clients<<std::endl;
             }
@@ -70,8 +70,10 @@
                 std::cout<<i.get()->getSM()<<std::endl;
             }
   		}
-  		void addSM(){}
-  		void removeSM(){}
+  		void addStateMachines(SMPtr_<T> s){stateMachinesPtr_.push_back(s);}
+  		void removeStateMachines(SMPtr_<T> s){stateMachinesPtr_.remove(s);}
+  		void addSM(SMPtr_<T> s,SM x){s.get()->addSM(x);}
+  		void removeSM(SMPtr_<T> s,int x){s.get()->removeSM(x);}
   		void clearStateMachines()
   		{
   		    for (auto const& i : stateMachinesPtr_) {
@@ -99,7 +101,8 @@
                 std::cout<<subscribers_[i].get()->getStateMachines()<<std::endl;
             }
  		}
-   	
+   	    void observe(){}
+   	    
    };
    
    template <class T,class U, class Z> using notifierPtr_ = std::shared_ptr<Notifier<T,U,Z>>;
@@ -109,9 +112,18 @@
 
 int main()
 {
-    
+    //std::cout<<"Mere treaba bine ";
     StateMachine<int> *p = new StateMachine<int>(1);
-    std::cout<<p->getindex();
-    
+    std::cout<<p->getindex()<<std::endl;
+    struct SM x,y;
+    x.ipRangeStart = "1";
+    x.ipRangeStop = "10";
+    x.clients=4;
+    y.ipRangeStart = "11";
+    y.ipRangeStop = "20";
+    y.clients=7;
+    p->addSM(x);
+    p->addSM(y);
+    p->getSM();
     
 }
