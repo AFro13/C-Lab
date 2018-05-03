@@ -1,0 +1,117 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
+#include <list>
+
+ struct SM{
+ 	std::string ipRangeStart;
+ 	std::string ipRangeStop;
+ 	int clients;
+ };
+
+ template <class T>
+ class StateMachine
+ {
+    private:
+ 		std::vector<SM> container_;
+ 		T index;
+ 	public:
+ 		StateMachine();
+ 		~StateMachine();
+ 		StateMachine(T x) { index=x; }
+ 		StateMachine(const StateMachine &s2) {container_=s2.container_; }
+ 		StateMachine(StateMachine&& arg) : container_(std::move(arg.container_)){}
+        
+ 		T getindex() {return index;}
+ 		T setindex(T x){ index=x; }
+ 		void getSM()
+ 		{
+ 		    for (int i=0; i<container_.size(); i++)
+            {
+                std::cout<<container_[i].ipRangeStart<<" "<<container_[i].ipRangeStop<<" "<<container_[i].clients<<std::endl;
+            }
+ 		}
+ 	    void addSM(SM x){ container_.push_back(x); }
+ 	    void removeSM(int s)
+ 	    {
+ 	        container_.erase(container_.begin()+s);
+ 	    }
+ 		void removeAllEmptySM()
+ 		{
+ 		    for (int i=0; i<container_.size(); i++)
+            {
+                if(container_[i].clients==0)container_.erase(container_.begin()+i);
+            }
+ 		}
+ 		
+ };
+
+
+ template<class T> using  SMPtr_ = std::shared_ptr<StateMachine<T>>;
+ template<class T> using  SMCPtr_ = std::shared_ptr<const StateMachine<T>>;
+ 
+  template <class T,class U, class Z>
+  class Watcher{
+  	private:
+  		std::list<SMPtr_<T>> stateMachinesPtr_;
+  		U message_;
+  		Z relevance_;
+  	public:
+  		Watcher();
+  		~Watcher();
+  		U getMessage(){return message_;}
+  		void setMessage(U x){message_=x;}
+  		Z getRelevance(){return relevance_;}
+  		void setRelevance(Z y){relevance_=y;}
+  		void getStateMachines()
+  		{
+  		    for (auto const& i : stateMachinesPtr_) {
+                std::cout<<i.get()->getSM()<<std::endl;
+            }
+  		}
+  		void addSM(){}
+  		void removeSM(){}
+  		void clearStateMachines()
+  		{
+  		    for (auto const& i : stateMachinesPtr_) {
+                std::cout<<i.get()->removeAllEmptySM();
+            }
+  		}
+  		void observe(){}
+  };
+  
+  
+  template <class T,class U, class Z> using watcherPtr_ = std::shared_ptr<Watcher<T,U,Z>>;
+  template <class T,class U, class Z> using watcherCPtr_ = std::shared_ptr<const Watcher<T,U,Z>>;
+   
+   template <class T,class U, class Z>
+   class Notifier{
+    private:
+   		std::vector<watcherCPtr_<T,U,Z>> subscribers_;
+   	public:
+   		Notifier();
+  		~Notifier();
+  		void getSubs()
+ 		{
+ 		    for (int i=0; i<subscribers_.size(); i++)
+            {
+                std::cout<<subscribers_[i].get()->getStateMachines()<<std::endl;
+            }
+ 		}
+   	
+   };
+   
+   template <class T,class U, class Z> using notifierPtr_ = std::shared_ptr<Notifier<T,U,Z>>;
+   template <class T,class U, class Z> using notifierCPtr_ =  std::shared_ptr<const Notifier<T,U,Z>>; 
+
+    
+
+int main()
+{
+    
+    StateMachine<int> *p = new StateMachine<int>(1);
+    std::cout<<p->getindex();
+    
+    
+}
