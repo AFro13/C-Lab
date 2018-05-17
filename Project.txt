@@ -10,10 +10,13 @@
  	int clients;
  };
 
+
  template <class T>
  class StateMachine
  {
-    private:
+    private: 
+        //class Watcher<int,std::string,int> * w;
+        int nr;
  		std::vector<SM> container_;
  		T index;
  	public:
@@ -45,6 +48,12 @@
             }
  		}
  		
+ 		void changenrofclients(int x,int s)
+ 		{
+ 		    container_[s].clients=x;
+ 		    notify();
+ 		}
+ 		void notify();
  };
 
 
@@ -80,12 +89,31 @@
                 std::cout<<i.get()->removeAllEmptySM();
             }
   		}
-  		void observe(){}
+  		void observe()
+  		{
+  		    std::cout<<"Nr of clients has changed"<<std::endl;
+  		}
   };
+  
+  
+  
+  
   
   
   template <class T,class U, class Z> using watcherPtr_ = std::shared_ptr<Watcher<T,U,Z>>;
   template <class T,class U, class Z> using watcherCPtr_ = std::shared_ptr<const Watcher<T,U,Z>>;
+  
+  
+  
+  template<class T>
+  void StateMachine<T>::notify() 
+  {
+    Watcher<int, std::string, int> *w ;
+    w->observe();
+    std::cout<<"message sent"<<std::endl;
+  }
+  
+  
    
    template <class T,class U, class Z>
    class Notifier{
@@ -125,5 +153,6 @@ int main()
     p->addSM(x);
     p->addSM(y);
     p->getSM();
-    
+    p->changenrofclients(6,0);
+    p->getSM();
 }
